@@ -1,0 +1,6 @@
+C:\Users\JADPA11\source\repos\Libreria2M2\ViewModels\bin\Debug\ViewModels.dll
+C:\Users\JADPA11\source\repos\Libreria2M2\ViewModels\bin\Debug\ViewModels.pdb
+C:\Users\JADPA11\source\repos\Libreria2M2\ViewModels\obj\Debug\ViewModels.csproj.AssemblyReference.cache
+C:\Users\JADPA11\source\repos\Libreria2M2\ViewModels\obj\Debug\ViewModels.csproj.CoreCompileInputs.cache
+C:\Users\JADPA11\source\repos\Libreria2M2\ViewModels\obj\Debug\ViewModels.dll
+C:\Users\JADPA11\source\repos\Libreria2M2\ViewModels\obj\Debug\ViewModels.pdb
