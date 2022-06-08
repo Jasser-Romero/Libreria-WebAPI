@@ -17,6 +17,7 @@ namespace Libreria
     public partial class Form1 : Form
     {
         string url = "https://localhost:44369/Api/Libros";
+        private static int id = 0;
         public Form1()
         {
             InitializeComponent();
@@ -62,6 +63,28 @@ namespace Libreria
             Limpiar();
             GetAllLibros();
         }
+        private async void GetLibroById(int id)
+        {
+            using(var client = new HttpClient())
+            {
+                string uri = url + "/" + id.ToString();
+                HttpResponseMessage response = await client.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    var libroJsonString = await response.Content.ReadAsStringAsync();
+                    LibrosViewModel oLibro = JsonConvert.DeserializeObject<LibrosViewModel>(libroJsonString);
+                    txtAutor.Text = oLibro.Autor;
+                    txtEditorial.Text = oLibro.Editorial;
+                    txtISBN.Text = oLibro.ISBN;
+                    txtTemas.Text = oLibro.Temas;
+                    txtTitulo.Text = oLibro.Titulo;
+                }
+                else
+                {
+                    MessageBox.Show($"No se puede leer el libro: {response.StatusCode}");
+                }
+            }
+        }
         private void Limpiar()
         {
             txtAutor.Clear();
@@ -69,10 +92,25 @@ namespace Libreria
             txtISBN.Clear();
             txtTemas.Clear();
             txtTitulo.Clear();
+            id = 0;
         }
         private void btnRegistrar_Click(object sender, EventArgs e)
         {
             AddLibro();
         }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            foreach(DataGridViewRow row in dataGridView1.Rows)
+            {
+                if(row.Index == e.RowIndex)
+                {
+                    id = (int)row.Cells[0].Value;
+                    GetLibroById(id);
+                }
+            }
+        }
+
+        
     }
 }
