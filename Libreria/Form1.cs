@@ -85,6 +85,21 @@ namespace Libreria
                 }
             }
         }
+        private async void DeleteLibro(int id)
+        {
+            using(var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(url);
+                HttpResponseMessage result = await client.DeleteAsync(string.Format("{0}/{1}",url,id));
+                if(result.IsSuccessStatusCode)
+                    MessageBox.Show("Libro eliminado con exito");
+                else
+                    MessageBox.Show($"No se pudo eliminar el libro: {result.StatusCode}");
+
+                Limpiar();
+                GetAllLibros();
+            }
+        }
         private void Limpiar()
         {
             txtAutor.Clear();
@@ -109,6 +124,47 @@ namespace Libreria
                     GetLibroById(id);
                 }
             }
+        }
+
+        private void btnActualizar_Click(object sender, EventArgs e)
+        {
+            if(id != 0)
+                UpdateLibro(id);
+            else
+                MessageBox.Show("No ha seleccionado ningun libro");
+
+        }
+
+        private async void UpdateLibro(int id)
+        {
+            LibrosViewModel oLibro = new LibrosViewModel()
+            {
+                Id = id,
+                ISBN = txtISBN.Text,
+                Autor = txtAutor.Text,
+                Editorial = txtEditorial.Text,
+                Temas = txtTemas.Text,
+                Titulo = txtTitulo.Text
+            };
+
+            using(var client = new HttpClient())
+            {
+                var serializedLibro = JsonConvert.SerializeObject(oLibro);
+                var content = new StringContent(serializedLibro, Encoding.UTF8, "application/json");
+                var result = await client.PutAsync($"https://localhost:44369/Api/Libros/{oLibro.Id}", content);
+                if(result.IsSuccessStatusCode)
+                    MessageBox.Show("Libro actualizado");
+                else
+                    MessageBox.Show($"Error al actualizar: {result.StatusCode}");
+            }
+            Limpiar();
+            GetAllLibros();
+        }
+
+        private void btnBorrar_Click(object sender, EventArgs e)
+        {
+            if (id != 0)
+                DeleteLibro(id);
         }
 
         

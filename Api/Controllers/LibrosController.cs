@@ -59,7 +59,9 @@ namespace Api.Controllers
         [HttpPost]
         public IHttpActionResult Add(LibrosViewModel model)
         {
-            using(LibreriaEntities1 db = new LibreriaEntities1())
+            if (!ModelState.IsValid)
+                return BadRequest("No es un modelo valido");
+            using (LibreriaEntities1 db = new LibreriaEntities1())
             {
                 var oLibro = new Libros()
                 {
